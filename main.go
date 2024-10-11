@@ -2,14 +2,15 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"net/http"
 )
 
 type Customer struct {
-	Name    string `json:"full_name"`
-	City    string `json:"city"`
-	ZipCode string `json:"zip_code"`
+	Name    string `json:"full_name" xml:"full_name"`
+	City    string `json:"city" xml:"city"`
+	ZipCode string `json:"zip_code" xml:"zip_code"`
 }
 
 func main() {
@@ -36,9 +37,18 @@ func getAllCustomers(w http.ResponseWriter, r *http.Request) {
 		{"Emma", "Takoradi", "2839"},
 		{"Derby", "Accra", "2039"},
 	}
-	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(customers)
-	if err != nil {
-		return
+	if r.Header.Get("Content-Type") == "application/xml" {
+		w.Header().Set("Content-Type", "application/xml")
+		err := xml.NewEncoder(w).Encode(customers)
+		if err != nil {
+			return
+		}
+	} else {
+		w.Header().Set("Content-Type", "application/json")
+		err := json.NewEncoder(w).Encode(customers)
+		if err != nil {
+			return
+		}
+
 	}
 }
