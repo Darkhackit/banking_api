@@ -10,7 +10,8 @@ import (
 
 func Start() {
 	//mux := http.NewServeMux()
-	ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryStub())}
+	//ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryStub())}
+	ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryDB())}
 	router := mux.NewRouter()
 	router.HandleFunc("/customers", ch.GetAllCustomers).Methods("GET")
 	router.HandleFunc("/customers", CreateCustomer).Methods("POST")
