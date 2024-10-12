@@ -3,14 +3,16 @@ package app
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github/Darkhackit/banking_api/domain"
+	"github/Darkhackit/banking_api/service"
 	"net/http"
 )
 
 func Start() {
 	//mux := http.NewServeMux()
+	ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryStub())}
 	router := mux.NewRouter()
-	router.HandleFunc("/greet", Greet).Methods("GET")
-	router.HandleFunc("/customers", GetAllCustomers).Methods("GET")
+	router.HandleFunc("/customers", ch.GetAllCustomers).Methods("GET")
 	router.HandleFunc("/customers", CreateCustomer).Methods("POST")
 	router.HandleFunc("/customers/{customer_id:[0-9]+}", getCustomer).Methods("GET")
 

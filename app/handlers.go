@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github/Darkhackit/banking_api/service"
 	"net/http"
 )
 
@@ -13,18 +14,14 @@ type Customer struct {
 	City    string `json:"city" xml:"city"`
 	ZipCode string `json:"zip_code" xml:"zip_code"`
 }
-
-func Greet(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprint(w, "Hello World!")
-	if err != nil {
-		return
-	}
+type CustomerHandlers struct {
+	service service.CustomerService
 }
 
-func GetAllCustomers(w http.ResponseWriter, r *http.Request) {
-	customers := []Customer{
-		{"Emma", "Takoradi", "2839"},
-		{"Derby", "Accra", "2039"},
+func (ch *CustomerHandlers) GetAllCustomers(w http.ResponseWriter, r *http.Request) {
+	customers, err := ch.service.GetAllCustomer()
+	if err != nil {
+		return
 	}
 	if r.Header.Get("Content-Type") == "application/xml" {
 		w.Header().Set("Content-Type", "application/xml")
@@ -38,7 +35,6 @@ func GetAllCustomers(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return
 		}
-
 	}
 }
 
