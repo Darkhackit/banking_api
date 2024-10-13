@@ -7,6 +7,9 @@ type CustomerRepositoryStub struct {
 func (r CustomerRepositoryStub) FindAll() ([]Customer, error) {
 	return r.customers, nil
 }
+func (r CustomerRepositoryStub) ById(id string) (*Customer, error) {
+	return &Customer{}, nil
+}
 
 func NewCustomerRepositoryStub() CustomerRepositoryStub {
 	customers := []Customer{
